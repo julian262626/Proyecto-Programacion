@@ -31,10 +31,6 @@ public class Producto {
         return categoria;
     }
 
-    public double getPrecio() {
-        return precio;
-    }
-
     public int getCantidad() {
         return cantidad;
     }
