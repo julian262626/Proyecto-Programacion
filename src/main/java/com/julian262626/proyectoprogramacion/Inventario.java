@@ -1,4 +1,3 @@
-
 package com.julian262626.proyectoprogramacion;
 
 import java.util.ArrayList;
@@ -17,11 +16,6 @@ public class Inventario {
 
         if (buscarProducto(producto.getCodigo()) != null) {
             System.out.println("El código ya existe.");
-            return;
-        }
-
-        if (producto.getPrecio() < 0 || producto.getCantidad() < 0) {
-            System.out.println("El precio y la cantidad no pueden ser negativos.");
             return;
         }
 
@@ -70,19 +64,6 @@ public class Inventario {
         }
     }
 
-    // Actualizar precio
-    public void actualizarPrecio(int codigo, double nuevoPrecio) {
-
-        Producto producto = buscarProducto(codigo);
-
-        if (producto != null && nuevoPrecio >= 0) {
-            producto.setPrecio(nuevoPrecio);
-            System.out.println("Precio actualizado correctamente.");
-        } else {
-            System.out.println("Producto no encontrado o precio inválido.");
-        }
-    }
-
     // Registrar entrada de productos
     public void entradaStock(int codigo, int cantidad) {
 
@@ -128,16 +109,12 @@ public class Inventario {
     // Reporte general
     public void generarReporte() {
 
-        double valorTotal = 0;
-        int totalProductos = 0;
+        int totalUnidades = 0;
         int agotados = 0;
 
         for (Producto producto : productos) {
 
-            valorTotal += producto.getPrecio()
-                    * producto.getCantidad();
-
-            totalProductos += producto.getCantidad();
+            totalUnidades += producto.getCantidad();
 
             if (producto.getCantidad() == 0) {
                 agotados++;
@@ -146,9 +123,7 @@ public class Inventario {
 
         System.out.println("\n===== REPORTE DE INVENTARIO =====");
         System.out.println("Referencias registradas: " + productos.size());
-        System.out.println("Unidades disponibles: " + totalProductos);
+        System.out.println("Unidades disponibles: " + totalUnidades);
         System.out.println("Productos agotados: " + agotados);
-        System.out.println("Valor total del inventario: $" + valorTotal);
     }
 }
-
