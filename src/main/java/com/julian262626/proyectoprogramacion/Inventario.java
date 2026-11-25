@@ -6,124 +6,81 @@ public class Inventario {
 
     private ArrayList<Producto> productos;
 
-    // Constructor
     public Inventario() {
         productos = new ArrayList<>();
     }
 
-    // Registrar un producto
-    public void registrarProducto(Producto producto) {
+    // Registrar producto
+    public void registrarProducto(String nombre, int stock) {
 
-        if (buscarProducto(producto.getCodigo()) != null) {
-            System.out.println("El código ya existe.");
-            return;
-        }
-
-        productos.add(producto);
-        System.out.println("Producto registrado correctamente.");
-    }
-
-    // Mostrar todos los productos
-    public void mostrarInventario() {
-
-        if (productos.isEmpty()) {
-            System.out.println("El inventario está vacío.");
-            return;
-        }
-
-        System.out.println("\n===== INVENTARIO DE LA TIENDA =====");
-
-        for (Producto producto : productos) {
-            producto.mostrarProducto();
+        if (buscarProducto(nombre) != null) {
+            System.out.println("El producto ya existe.");
+        } else if (stock < 0) {
+            System.out.println("Stock no valido.");
+        } else {
+            Producto nuevo = new Producto(nombre, stock);
+            productos.add(nuevo);
+            System.out.println("Producto registrado.");
         }
     }
 
-    // Buscar producto por código
-    public Producto buscarProducto(int codigo) {
+    // Buscar producto por nombre
+    public Producto buscarProducto(String nombre) {
 
-        for (Producto producto : productos) {
-
-            if (producto.getCodigo() == codigo) {
-                return producto;
+        for (Producto p : productos) {
+            if (p.getNombre().equalsIgnoreCase(nombre)) {
+                return p;
             }
         }
 
         return null;
     }
 
-    // Eliminar producto
-    public void eliminarProducto(int codigo) {
+    // Consultar producto
+    public void consultarProducto(String nombre) {
 
-        Producto producto = buscarProducto(codigo);
+        Producto p = buscarProducto(nombre);
 
-        if (producto != null) {
-            productos.remove(producto);
-            System.out.println("Producto eliminado correctamente.");
+        if (p != null) {
+            p.mostrarProducto();
         } else {
             System.out.println("Producto no encontrado.");
         }
     }
 
-    // Registrar entrada de productos
-    public void entradaStock(int codigo, int cantidad) {
+    // Registrar entrada
+    public void registrarEntrada(String nombre, int cantidad) {
 
-        Producto producto = buscarProducto(codigo);
+        Producto p = buscarProducto(nombre);
 
-        if (producto != null && cantidad > 0) {
-
-            producto.setCantidad(
-                producto.getCantidad() + cantidad
-            );
-
-            System.out.println("Entrada registrada correctamente.");
-
+        if (p != null) {
+            p.entrada(cantidad);
         } else {
-            System.out.println("Producto no encontrado o cantidad inválida.");
+            System.out.println("Producto no encontrado.");
         }
     }
 
-    // Registrar salida de productos
-    public void salidaStock(int codigo, int cantidad) {
+    // Registrar salida
+    public void registrarSalida(String nombre, int cantidad) {
 
-        Producto producto = buscarProducto(codigo);
+        Producto p = buscarProducto(nombre);
 
-        if (producto != null && cantidad > 0) {
-
-            if (producto.getCantidad() >= cantidad) {
-
-                producto.setCantidad(
-                    producto.getCantidad() - cantidad
-                );
-
-                System.out.println("Salida registrada correctamente.");
-
-            } else {
-                System.out.println("No hay suficiente stock.");
-            }
-
+        if (p != null) {
+            p.salida(cantidad);
         } else {
-            System.out.println("Producto no encontrado o cantidad inválida.");
+            System.out.println("Producto no encontrado.");
         }
     }
 
-    // Reporte general
-    public void generarReporte() {
+    // Mostrar inventario completo
+    public void mostrarInventario() {
 
-        int totalUnidades = 0;
-        int agotados = 0;
-
-        for (Producto producto : productos) {
-
-            totalUnidades += producto.getCantidad();
-
-            if (producto.getCantidad() == 0) {
-                agotados++;
-            }
+        if (productos.isEmpty()) {
+            System.out.println("Inventario vacio.");
         }
 
-        System.out.println("\n===== REPORTE DE INVENTARIO =====");
-        System.out.println("Referencias registradas: " + productos.size());
-        System.out.println("Unidades disponibles: " + totalUnidades);
-        System.out.println("Productos agotados: " + agotados);
+        for (Producto p : productos) {
+            p.mostrarProducto();
+        }
     }
 }
